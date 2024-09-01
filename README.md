@@ -1,3 +1,14 @@
+# Forked notes
+Forked from 2.0.5, will try to follow patches
+
+Install using
+```bash
+pip3 install git+https://github.com/thomaslachaux/streamrip.git@custom-patches
+```
+
+features :
+- add STREAMRIP_IGNORED_TRACKS environment variable
+
 ![streamrip logo](https://github.com/nathom/streamrip/blob/dev/demo/logo.svg?raw=true)
 
 [![Downloads](https://pepy.tech/badge/streamrip)](https://pepy.tech/project/streamrip)
@@ -153,7 +164,7 @@ Please document any functions or obscure lines of code.
 
 ### The Wiki
 
-To help out `streamrip` users that may be having trouble, consider contributing some information to the wiki. 
+To help out `streamrip` users that may be having trouble, consider contributing some information to the wiki.
 Nothing is too obvious and everything is appreciated.
 
 ## Acknowledgements

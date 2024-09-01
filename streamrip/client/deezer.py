@@ -2,6 +2,7 @@ import asyncio
 import binascii
 import hashlib
 import logging
+from os import environ
 
 import deezer
 from Cryptodome.Cipher import AES
@@ -54,15 +55,25 @@ class DeezerClient(Client):
     async def get_metadata(self, item_id: str, media_type: str) -> dict:
         # TODO: open asyncio PR to deezer py and integrate
         if media_type == "track":
-            return await self.get_track(item_id)
+            metadata = await self.get_track(item_id)
         elif media_type == "album":
-            return await self.get_album(item_id)
+            metadata = await self.get_album(item_id)
         elif media_type == "playlist":
-            return await self.get_playlist(item_id)
+            metadata = await self.get_playlist(item_id)
         elif media_type == "artist":
-            return await self.get_artist(item_id)
+            metadata = await self.get_artist(item_id)
         else:
             raise Exception(f"Media type {media_type} not available on deezer")
+        
+        # Remove tracks that are ignored to avoid errors
+        if environ.get("STREAMRIP_IGNORED_TRACKS") and 'tracks' in metadata:
+            import pprint
+            #pprint.pprint(metadata)
+            ignored_tracks = environ.get("STREAMRIP_IGNORED_TRACKS").split(",")
+            logger.debug(f"Ignored tracks {ignored_tracks}")
+            metadata["tracks"] = [x for x in metadata["tracks"] if str(x["id"]) not in ignored_tracks]
+
+        return metadata
 
     async def get_track(self, item_id: str) -> dict:
         try:
